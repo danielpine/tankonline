@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tank Online</title>
+    <style>
+        .floatleft {
+            position: relative;
+            float: left;
+        }
+        
+        .floatright {
+            float: right;
+        }
+    </style>
+    <script src="/static/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/static/js/tankGame.js?"></script>
+    <script type="text/javascript" src="/static/js/main.js?" +(new Date())></script>
+    <style>
+        html,
+        body {
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            user-select: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        #copyright {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body onkeydown="keydown();" onkeypress="keypress();" onkeyup="keyup()" style="background-color: black;margin: auto" align=center>
+    <!--坦克大战的战场-->
+    <div align=center style="height: 100%;color: white;background-color: black;margin: auto">
+        <font>Welcome to TankOnline, Have fun!</font>
+        <div style="width:1366px;border: 1px solid whitesmoke;margin: auto" align=center onmousedown="mousedown()">
+            <canvas onmousemove="mousemove()" id="tankMap" width="1366px" height="768px" style="background-color:black"></canvas>
+        </div>
+        <div style="width:1300px;text-align: center;color: green;">
+            <div style="height: 60px;">
+                <input style="width:100px;padding-right: 50px;" type="button" id="link" value="Link" />
+                <input style="width:100px;padding-right: 50px;" type="button" id="gamestatus" d value="New Life" />
+                <input style="width:100px;padding-right: 50px;" type="button" id="ResetAI" d value="Reset AI" />
+                <div id='tip2'></div>
+                <div id='tip3'></div>
+            </div>
+            <div id='tip'></div>
+            <div id='tip4'></div>
+        </div>
+        <font id='copyright' style="font-family:Arial, Helvetica, sans-serif;color: rgb(146, 141, 141);">Copyright&nbsp;&copy;&nbsp;2017-2019 Daniel Pine. All rights reserved.</font>
+    </div>
+</body>
+<script>
+    var canvas1 = document.getElementById('tankMap')
+    var cxt = canvas1.getContext('2d')
+</script>
+
+</html>
