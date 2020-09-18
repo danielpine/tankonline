@@ -20,7 +20,8 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
+    path('', views.index, name='index'),
     path('rec/', include('rec.urls')),
     path('admin/', admin.site.urls),
-    path('battle/', views.battle), 
+    path('battle/', views.battle),
 ]
