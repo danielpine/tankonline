@@ -5,39 +5,29 @@ import threading
 import time
 import uuid
 from collections import defaultdict
-
 import dwebsocket
-# Create your views here.
 from django.http import HttpResponse
 from django.shortcuts import render
 from dwebsocket import accept_websocket, require_websocket
-
 from rec.tankgame.room import Room
 from rec.tankgame.settings import Settings
 from rec.tankgame.tank import Tank
 
+# Create your views here.
 usr_dict = defaultdict(list)
-
 tank_settings = Settings()
-
 room = defaultdict(list)
-
 channelid = str(uuid.uuid1())
-
 room[channelid] = Room()
-
 room[channelid].channelid = channelid
-
 
 def index(request):
     return HttpResponse("Hello, world. You're at the rec index.哈哈")
-
 
 @require_websocket  #只接受websocket请求，不接受http请求，这是调用了dwebsocket的装饰器
 def websocket_test(request):
     message = request.websocket.wait()
     request.websocket.send("reply:" + message)
-
 
 @accept_websocket  #既能接受http也能接受websocket请求
 def echo(request):
@@ -69,7 +59,6 @@ def echo(request):
             except Exception as e:
                 print(e)
 
-
 @accept_websocket  #既能接受http也能接受websocket请求
 def snake(request):
     clientid = request.GET.get('clientid')
@@ -87,10 +76,8 @@ def snake(request):
                     print(jmsg)
             else:
                 pass
-
         except Exception as e:
             print(e)
-
 
 @accept_websocket  #既能接受http也能接受websocket请求
 def tank(request):
@@ -108,8 +95,7 @@ def tank(request):
                 # print(message)
                 if code == 3333:  #ResetAI
                     room[channelid].add_ai(random.randint(3, 8))
-                elif code == 5000:  #game_status
-                    print("code: ", 5000)
+                elif code == 5000:  #ping
                     request.websocket.send(json.dumps({"code": 5000}))
                 elif code == 1111:  #game_status
                     t = Tank(channelid, clientid, random.randint(140, 1300),
@@ -144,7 +130,6 @@ def tank(request):
                             json.dumps({
                                 'roomid': '-1'
                             }).encode('utf8'))
-
                 elif code == 1003:  #get_rooms
                     request.websocket.send(
                         json.dumps({

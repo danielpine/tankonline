@@ -68,7 +68,7 @@ bullet_direct = {
     0: [2, 5],
     1: [5, 2],
     2: [2, 5],
-    3: [5, 2]
+    3: [5, 2],
 }
 
 //坦克队列
@@ -199,20 +199,17 @@ function link() {
         }
         socket.onmessage = function(e) {
                 var data = JSON.parse(e.data)
-                    // // console.log(data)
                 if (data && data.code === 1111) {
-                    // // console.log(data.status)
                     if (data.status == 1) {
                         window.tanks = data.data
                         flashTankMap()
                     } else if (data.status == 0) {
-                        // console.log('游戏结束！')
+                        console.log('游戏结束！')
+                        notice('tip3', '游戏结束！')
                     } else if (data.status == 3) {
-                        // console.log('受伤了：' + data.message)
                         notice('tip2', 'Blood :' + data.data)
                         notice('tip3', data.message)
                     } else if (data.status == 4) {
-                        // console.log('死了：' + data.message)
                         notice('tip3', data.message)
                         delete tanks[data.data]
                     }
@@ -243,65 +240,61 @@ function flashTankMap() {
     cxt.clearRect(0, 0, 1366, 768)
         //我的坦克
     drawTank()
-        // noticeid('tip3', '<div align=left>' + JSON.stringify(tanks) + '</div>')
         //画出自己的子弹
     drawBullet()
-    if (islinking()) {
-        //send(new Msg(0, 'gameinfo', 'tanks', tanks))
-    }
 }
 
 key_status = {
     16: {
         status: false,
         down: false,
-        timer: null
+        timer: null,
     },
     37: {
         status: false,
         down: false,
-        timer: null
+        timer: null,
     },
     38: {
         status: false,
         down: false,
-        timer: null
+        timer: null,
     },
     39: {
         status: false,
         down: false,
-        timer: null
+        timer: null,
     },
     40: {
         status: false,
         down: false,
-        timer: null
+        timer: null,
     },
     87: {
         status: false,
         down: false,
-        timer: null
+        timer: null,
     },
     68: {
         status: false,
         down: false,
-        timer: null
+        timer: null,
     },
     83: {
         status: false,
         down: false,
-        timer: null
+        timer: null,
     },
     65: {
         status: false,
         down: false,
-        timer: null
+        timer: null,
     },
     32: {
         status: false,
         down: false,
-        timer: null
-    }
+        timer: null,
+    },
 }
 
 // 禁止右键菜单
@@ -311,11 +304,11 @@ document.oncontextmenu = function() {
 
 var shot_status = {
     shotting: false,
-    timer: null
+    timer: null,
 }
 
 function mousemove() {
-    // // console.log(event.movementX, event.movementY)
+    //   console.log(event.movementX, event.movementY)
 }
 
 function mousedown() {
@@ -423,24 +416,23 @@ function sendcmd(clientid, code) {
     send(
         new Msg(2222, 'cmd', '', {
             clientid: clientid,
-            cmd: code
+            cmd: code,
         })
     )
 }
 
 function start() {
     if (tanks[clientid]) {
-        // console.log('已开始游戏')
+        console.log('已开始游戏')
     } else {
         var me = new Tank(clientid, 140, 140, 0, heroColor)
         tanks[clientid] = me
-            //每隔100毫秒去刷新一次作战区
         window.setInterval('flashTankMap()', 30)
     }
 }
 
 function noticeid(id, msg) {
-    notice(id, msg)
+    // notice(id, msg)
 }
 
 function notice(id, msg) {
@@ -459,20 +451,20 @@ var lastping = 0
 var pinging = false
 
 function ping() {
-    console.log("excute ping()")
+    console.log('excute ping()')
     pinging = true
     lastping = new Date().getTime()
     send(new Msg(5000, 'ping', '', ''))
 }
 
 function pinged() {
-    notice("pingvalue", new Date().getTime() - lastping)
+    notice('pingvalue', new Date().getTime() - lastping)
     pinging = false
 }
 $(function() {
     link()
     ping()
-    window.setInterval("ping()", 500)
+    window.setInterval('ping()', 500)
     $('#login').click(function() {
         noticeid('tip2', clientid + '：登录中···')
         $('#tankMap').focus()
