@@ -95,7 +95,7 @@ def tank(request):
                 # print(message)
                 if code == 3333:  #ResetAI
                     room[channelid].add_ai(random.randint(3, 8))
-                elif code == 5000:  #ping
+                elif code == 5000:  #ping 
                     request.websocket.send(json.dumps({"code": 5000}))
                 elif code == 1111:  #game_status
                     t = Tank(channelid, clientid, random.randint(140, 1300),
