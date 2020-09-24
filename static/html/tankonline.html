@@ -29,11 +29,17 @@
         #copyright {
             text-align: center;
         }
+        
+        #ping {
+            position: fixed;
+            right: 10px;
+        }
     </style>
 </head>
 
 <body onkeydown="keydown();" onkeypress="keypress();" onkeyup="keyup()" style="background-color: black;margin: auto" align=center>
     <!--坦克大战的战场-->
+    <div id='ping' style="color: greenyellow;">ping: <span id='pingvalue'>0</span> </div>
     <div align=center style="height: 100%;color: white;background-color: black;margin: auto">
         <font>Welcome to TankOnline, Have fun!</font>
         <div style="width:1366px;border: 1px solid whitesmoke;margin: auto" align=center onmousedown="mousedown()">

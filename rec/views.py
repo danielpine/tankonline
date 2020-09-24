@@ -31,7 +31,7 @@ room[channelid].channelid = channelid
 
 def index(request):
     return HttpResponse("Hello, world. You're at the rec index.哈哈")
- 
+
 
 @require_websocket  #只接受websocket请求，不接受http请求，这是调用了dwebsocket的装饰器
 def websocket_test(request):
@@ -108,26 +108,25 @@ def tank(request):
                 # print(message)
                 if code == 3333:  #ResetAI
                     room[channelid].add_ai(random.randint(3, 8))
-                if code == 1111:  #game_status
+                elif code == 5000:  #game_status
+                    print("code: ", 5000)
+                    request.websocket.send(json.dumps({"code": 5000}))
+                elif code == 1111:  #game_status
                     t = Tank(channelid, clientid, random.randint(140, 1300),
                              random.randint(140, 700), random.randint(0, 3),
                              tank_settings)
                     color = [tank_settings.random_color(), '#00FFFF']
-                    # print(color)
                     t.tank_color = color
                     user = {"id": clientid, "roomid": channelid, 'tank': t}
                     room[channelid].add_user_requests(clientid, request)
                     room[channelid].add_user(user)
                     room[channelid].add_battling_user(user)
-                    # room[channelid].fun_timer(request)
                     room[channelid].run()
                 elif code == 1000:  #
+                    request.websocket.send(json.dumps().encode('utf8'))
                     pass
-                    # print(code)
                 elif code == 1001:  #get_players
                     pass
-                    # print(code)
-                    #request.websocket.send(json.dumps(channel).encode('utf8'))
                 elif code == 1002:  #in_room
                     roomid = int(jmsg['data'])
                     if roomid in room:
@@ -159,23 +158,17 @@ def tank(request):
                     rcid = cmd_data['clientid']
                     rcmd = cmd_data['cmd']
                     battle_ing = room[channelid].battling[clientid]['tank']
-                    # print(battle_ing)
-                    # print(rcid, rcmd)
                     if rcmd == 87:
                         battle_ing.move(0)
-                        # print('↑')
                     elif rcmd == 68:
                         battle_ing.move(1)
-                        # print('→')
                     elif rcmd == 83:
                         battle_ing.move(2)
-                        # print('↓')
                     elif rcmd == 65:
                         battle_ing.move(3)
                     elif rcmd == 69:
                         battle_ing.biu()
-                        # print('←')
-                    elif rcmd in [16,32, 37, 38, 39, 40]:
+                    elif rcmd in [16, 32, 37, 38, 39, 40]:
                         # check shoting frequency
                         # LAST_SHOT_TIME_STAMP
                         user = room[channelid].battling[clientid]
@@ -191,7 +184,6 @@ def tank(request):
                             user['LAST_SHOT_TIME_STAMP'] = now
                         if shotable:
                             battle_ing.shot(rcmd)
-                        # print('shot')
                     request.websocket.send(
                         json.dumps({
                             "code":
@@ -211,9 +203,7 @@ def tank(request):
                         }).encode('utf8'))
                 else:
                     pass
-                    # print(code)
             else:
                 pass
-
         except Exception as e:
             print(e)

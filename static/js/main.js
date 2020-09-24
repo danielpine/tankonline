@@ -216,6 +216,8 @@ function link() {
                         notice('tip3', data.message)
                         delete tanks[data.data]
                     }
+                } else if (data && data.code === 5000) {
+                    pinged()
                 }
             }
             // Call onopen directly if socket is already open
@@ -419,12 +421,11 @@ function sendcmd_interval_cancel(clientid, key) {
 
 function sendcmd(clientid, code) {
     send(
-            new Msg(2222, 'cmd', '', {
-                clientid: clientid,
-                cmd: code
-            })
-        )
-        // key_status[key].timer = window.setInterval("sendcmd('" + clientid + "', " + code + ",'" + key + "')", 100)
+        new Msg(2222, 'cmd', '', {
+            clientid: clientid,
+            cmd: code
+        })
+    )
 }
 
 function start() {
@@ -439,7 +440,7 @@ function start() {
 }
 
 function noticeid(id, msg) {
-    // $('#' + id).html(msg)
+    notice(id, msg)
 }
 
 function notice(id, msg) {
@@ -453,7 +454,25 @@ function Msg(code, type, message, data) {
     this.data = data
 }
 
+// static values
+var lastping = 0
+var pinging = false
+
+function ping() {
+    console.log("excute ping()")
+    pinging = true
+    lastping = new Date().getTime()
+    send(new Msg(5000, 'ping', '', ''))
+}
+
+function pinged() {
+    notice("pingvalue", new Date().getTime() - lastping)
+    pinging = false
+}
 $(function() {
+    link()
+    ping()
+    window.setInterval("ping()", 500)
     $('#login').click(function() {
         noticeid('tip2', clientid + '：登录中···')
         $('#tankMap').focus()
